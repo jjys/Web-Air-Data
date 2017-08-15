@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+	<script src="./js/air_tbl.js"></script>
+
+</head>
+
+
+<body>
+	<input type="button" onclick="GetData()"/>
+
+	<table id="airpolution_tbl"></table>
+
+	<script src="./jquery/jquery-3.2.1.min.js"></script>
+
+	<script>
+		$(function(){
+			var NowDate = new Date();
+			var h = NowDate.getHours();
+			var m = NowDate.getMinutes();
+			var s = NowDate.getSeconds();
+			console.log(h+" "+m+" "+s);
+		});
+		
+		function GetData(){
+			/*http://opendata.epa.gov.tw/webapi/api/rest/datastore/{resourceID}/?format={format}&limit={limit}&token={token}*/
+			var URLs = "https://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I-000259";
+			var data = {
+				format: "json",
+				token: "bWJLA83JX0KDA4ygvrvoSA"
+			}
+			
+			$.ajax({
+				url: URLs,
+				data: data,
+				type: "GET",
+				dataType: "jsonp",
+				cache: false,
+				jsonpCallback: "jsonpCallback",
+				success: function(getdata){
+					gen_air_tbl(JSON.stringify(getdata));
+					console.log("success: " + data);
+				},
+				error:function(xhr, ajaxOptions, thrownError){ 
+					alert(xhr.status); 
+					alert(thrownError); 
+				}
+			});
+
+		}
+
+		
+	</script>
+
+
+
+</body>
+</html>
