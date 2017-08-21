@@ -36,15 +36,7 @@ function gen_air_tbl(data){
 			str += "</td><td>"+jsonDoc.result.records[j]["PM2.5_AVG"];
 			str += "</td><td>"+jsonDoc.result.records[j].PM10_AVG;
 		}
-		/*for(i=0;i<jsonDoc.PermissionManagement.length;i++){
-			str +="<tr><td id=autho_UserID_"+i+" data-th=使用者ID>"+jsonDoc.PermissionManagement[i].UserID;
-			str +="</td><td id=autho_Name_"+i+" data-th=姓名>"+jsonDoc.PermissionManagement[i].Name;
-			str +="</td><td id=autho_PhoneNo_"+i+" data-th=電話>"+jsonDoc.PermissionManagement[i].PhoneNo;
-			str +="</td><td id=autho_Priority_"+i+" data-th=權限>"+jsonDoc.PermissionManagement[i].Priority;
-			str +="</td><td data-th=管理>"+"<button type=button data-toggle=modal data-target=#edit_user_autho_popout onclick=authority_edit("+i+")>編輯</button>"+" ";
-			str +="<button type=button data-toggle=modal data-target=#delete_user_autho_popout onclick=delete_authority("+i+")>刪除</button>";
-			str +="</td></tr>";
-		}*/
+		
 		str +="</tr></thead><tbody></tbody>";
 	}else{}
 	

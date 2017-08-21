@@ -1,38 +1,46 @@
 <!doctype html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" href="./css/main.css" />
 	<script src="./js/air_tbl.js"></script>
-
 </head>
 
 
 <body>
+	<!--
 	<input type="button" onclick="GetData()"/>
+	-->
+	<div>現在時間：<span id="nowTime"></span></div>
+	<div class="abgne_tab">
+		<ul class="tabs">
+			<li><a href="#tab1">即時注意資訊</a></li>
+			<li><a href="#tab2">詳細資料</a></li>
+		</ul>
+ 
+		<div class="tab_container">
+			<div id="tab1" class="tab_content">
+				<h2>即時注意資訊</h2>
 
-	<table id="airpolution_tbl"></table>
+			</div>
+			<div id="tab2" class="tab_content">
+				<table class="dataTable" id="airpolution_tbl"></table>
+			</div>
+		</div>
+	</div>
+	
+
 
 	<script src="./jquery/jquery-3.2.1.min.js"></script>
-
+	<script src="./js/d3/d3.min.js"></script>
+	<script src="./js/main.js"></script>
 	<script>
-		$(function(){
-			var NowDate = new Date();
-			var h = NowDate.getHours();
-			var m = NowDate.getMinutes();
-			var s = NowDate.getSeconds();
-			console.log(h+" "+m+" "+s);
-			if((h+m+s)==0){
-				console.log("0");
-			}else{console.log(NowDate);};
-		});
-		
 		function GetData(){
 			/*http://opendata.epa.gov.tw/webapi/api/rest/datastore/{resourceID}/?format={format}&limit={limit}&token={token}*/
 			var URLs = "https://opendata.epa.gov.tw/webapi/api/rest/datastore/355000000I-000259";
 			var data = {
 				format: "json",
 				token: "bWJLA83JX0KDA4ygvrvoSA"
-			}
-			
+			}			
 			$.ajax({
 				url: URLs,
 				data: data,
@@ -42,17 +50,70 @@
 				jsonpCallback: "jsonpCallback",
 				success: function(getdata){
 					gen_air_tbl(JSON.stringify(getdata));
-					console.log("success: " + data);
 				},
 				error:function(xhr, ajaxOptions, thrownError){ 
 					alert(xhr.status); 
 					alert(thrownError); 
 				}
 			});
-
 		}
 
-		
+		function ShowTime(){
+			var NowDate = new Date();
+			var h = NowDate.getHours();
+			var m = NowDate.getMinutes();
+			var s = NowDate.getSeconds();
+			var week = NowDate.getDay();
+			var date = NowDate.getDate();
+			var month = NowDate.getMonth()+1;
+			var year = NowDate.getFullYear();
+			switch(week){
+				case 0:
+					x = "日";
+					break;
+				case 1:
+					x = "一";
+					break;
+				case 2:
+					x = "二";
+					break;
+				case 3:
+					x = "三";
+					break;
+				case 4:
+					x = "四";
+					break;
+				case 5:
+					x = "五";
+					break;
+				case 6:
+					x = "六";
+					break;
+			}
+			week = x;
+			if(s<10){
+				s1="0";
+			}else{s1="";}
+			if(m<10){
+				m1="0";
+			}else{m1="";}
+			if(h<10){
+				h1="0";
+			}else{h1="";}
+			$("#nowTime").html(year+"/"+month+"/"+date+" "+"("+week+")"+" "+h1+h+":"+m1+m+":"+s1+s);
+
+			// if 1hr later call API and get data again
+			if(m+s==0){
+				getData();
+			}
+		}
+
+
+		$(function(){
+			ShowTime();
+			setInterval("ShowTime()",1000)
+			GetData();
+		});
 	</script>
 
 
